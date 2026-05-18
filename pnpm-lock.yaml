@@ -8,9 +8,15 @@ importers:
 
   .:
     devDependencies:
+      '@prisma/client':
+        specifier: 5.22.0
+        version: 5.22.0(prisma@5.22.0)
       dotenv-cli:
         specifier: ^11.0.0
         version: 11.0.0
+      prisma:
+        specifier: 5.22.0
+        version: 5.22.0
       typescript:
         specifier: 5.6.3
         version: 5.6.3
