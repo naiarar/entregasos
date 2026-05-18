@@ -8,8 +8,8 @@
     "types": ["node"],
     "baseUrl": "./",
     "paths": {
-      "@levou/shared": ["../../packages/shared/src"],
-      "@levou/shared/*": ["../../packages/shared/src/*"]
+      "@entregasos/shared": ["../../packages/shared/src"],
+      "@entregasos/shared/*": ["../../packages/shared/src/*"]
     }
   },
   "include": ["src/**/*", "test/**/*"]
