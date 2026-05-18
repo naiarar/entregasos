@@ -1,0 +1,125 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  GENERAL_ADMIN
+  ADMIN
+  DISPATCHER
+  DRIVER
+}
+
+enum UserStatus {
+  PENDING_ACTIVATION
+  ACTIVE
+  DISABLED
+}
+
+enum VehicleType {
+  BIKE
+  MOTO
+  CAR
+}
+
+enum VehicleOwnership {
+  OWN
+  RENTED
+  COMPANY
+}
+
+model Address {
+  id           String   @id @default(cuid())
+  street       String
+  number       String
+  complement   String?
+  neighborhood String
+  city         String
+  state        String   @db.Char(2)
+  zipCode      String   @db.Char(8)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  tenant       Tenant?
+}
+
+model Tenant {
+  id              String     @id @default(cuid())
+  name            String
+  cnpj            String     @unique
+  legalName       String
+  responsibleName String
+  responsibleCpf  String
+  cpfLast2        String     @db.Char(2)
+  logoUrl         String?
+  primaryColor    String?
+  secondaryColor  String?
+  addressId       String     @unique
+  address         Address    @relation(fields: [addressId], references: [id], onDelete: Restrict)
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+  users           User[]
+  drivers         Driver[]
+  invites         Invite[]
+}
+
+model User {
+  id           String     @id @default(cuid())
+  email        String     @unique
+  passwordHash String?
+  status       UserStatus @default(PENDING_ACTIVATION)
+  role         Role
+  tenantId     String?
+  tenant       Tenant?    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  driver       Driver?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  @@index([tenantId])
+}
+
+model Driver {
+  id               String           @id @default(cuid())
+  tenantId         String
+  userId           String           @unique
+  vehicleType      VehicleType
+  vehicleOwnership VehicleOwnership
+  active           Boolean          @default(true)
+  tenant           Tenant           @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  user             User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+
+  @@index([tenantId, active])
+}
+
+model Invite {
+  id        String    @id @default(cuid())
+  tokenHash String    @unique
+  tenantId  String
+  email     String
+  role      Role
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+  createdBy String
+  tenant    Tenant    @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, usedAt])
+}
+
+model AuditLog {
+  id             String   @id @default(cuid())
+  actorId        String
+  actorRole      Role
+  targetTenantId String?
+  action         String
+  payload        Json
+  createdAt      DateTime @default(now())
+
+  @@index([targetTenantId, createdAt])
+  @@index([actorId, createdAt])
+}

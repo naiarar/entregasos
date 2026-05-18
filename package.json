@@ -1,0 +1,25 @@
+{
+  "name": "levou",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Levou — SaaS multitenant de gestão de frota própria multimodal para SMB",
+  "engines": {
+    "node": ">=22",
+    "pnpm": ">=9"
+  },
+  "packageManager": "pnpm@9.15.9",
+  "scripts": {
+    "lint": "pnpm -r --parallel lint",
+    "typecheck": "pnpm -r --parallel typecheck",
+    "test": "pnpm -r --parallel test",
+    "build": "pnpm -r build",
+    "dev:api": "pnpm --filter @levou/api dev",
+    "db:up": "docker compose up -d postgres mongo",
+    "db:down": "docker compose down",
+    "db:migrate": "pnpm --filter @levou/api prisma migrate dev",
+    "db:generate": "pnpm --filter @levou/api prisma generate"
+  },
+  "devDependencies": {
+    "typescript": "5.6.3"
+  }
+}

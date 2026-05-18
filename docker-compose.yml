@@ -1,0 +1,36 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: levou-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: levou
+      POSTGRES_PASSWORD: levou
+      POSTGRES_DB: levou_dev
+    ports:
+      - "5432:5432"
+    volumes:
+      - levou_pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U levou -d levou_dev"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  mongo:
+    image: mongo:7
+    container_name: levou-mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - levou_mongo_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.runCommand({ ping: 1 })"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  levou_pg_data:
+  levou_mongo_data:
