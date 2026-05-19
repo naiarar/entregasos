@@ -12,5 +12,7 @@
       "@entregasos/shared/*": ["../../packages/shared/src/*"]
     }
   },
-  "include": ["src/**/*", "test/**/*"]
+  "references": [{ "path": "../../packages/shared" }],
+  "include": ["src/**/*"],
+  "exclude": ["**/*.spec.ts", "**/*.integration.spec.ts", "dist", "node_modules"]
 }
