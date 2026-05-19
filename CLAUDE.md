@@ -118,7 +118,7 @@ entregasos/
 - `tenant-isolation.spec.ts` · `general-admin-crosstenant.spec.ts` · `cpf-encryption.spec.ts` · `cpf-masking.spec.ts` · `ws-tenant-room.spec.ts` · `address-1to1.spec.ts` · `activate.e2e-spec.ts` · `tenants-branding.e2e-spec.ts` · `invite-token-hashing.spec.ts`
 
 ## Estado atual da implementação
-**Concluído** (commits no branch `EOS-001`):
+**Concluído** (branch `EOS-001`):
 - Monorepo pnpm workspaces (apps/api + packages/shared)
 - NestJS 10 com `/health`
 - packages/shared com enums e schemas Zod (Address, Tenant, Driver)
@@ -126,19 +126,20 @@ entregasos/
 - docker-compose (Postgres 16 + Mongo 7) — containers healthy
 - CI GitHub Actions (lint + typecheck)
 - `.env` com secrets gerados (gitignored)
+- Bug Prisma P1010 destravado (conflito de porta com brew Postgres 17 — Docker movido pra 5433). Migration `20260518234003_init` criada (7 tabelas).
 
-**Resolvido na sessão 2026-05-18:**
-- ✅ Bug Prisma P1010 destravado — era conflito de porta (brew Postgres 17 em 5432). Docker Postgres movido pra `5433:5432`. Migration `20260518234003_init` criada (7 tabelas). Detalhes da causa raiz em [memory/project_entregasos_architecture.md](memory/project_entregasos_architecture.md).
-- ✅ `prisma` + `@prisma/client` 5.22.0 adicionados como devDeps na raiz (workaround pro `projectRoot` do Prisma em monorepo com schema na raiz).
+**Concluído** (branch `EOS-002` — Semana 2 do cronograma):
+- ✅ Módulo `auth` com JWT + RBAC (Roles `GENERAL_ADMIN/ADMIN/DISPATCHER/DRIVER`)
+- ✅ Prisma tenant middleware via `nestjs-cls` (AsyncLocalStorage injeta `where: { tenantId }`)
+- ✅ Setup Jest
 
 **Pendências críticas:**
 1. 🎨 **Branding pendente** — tagline + paleta + logo direction pra EntregaSOS (a tagline "Levou? Levou." era do nome anterior descartado).
-2. 📦 **GitHub remote** — repo ainda local, não criado em `github.com`.
 
 **Próximos passos sugeridos:**
-- Implementar módulo `auth` (JWT + RBAC) — Semana 2 do cronograma → branch `EOS-002`
-- Criar repositório público no GitHub
-- Decidir branding (party mode session pode ajudar)
+- Módulo `tenants` + `/admin/tenants/new` (Semana 3-4) → próxima branch `EOS-003`
+- Implementar `PrismaAdminService` isolado (linha física entre tenant-safe e admin-raw)
+- Cobertura dos testes críticos: `tenant-isolation.spec.ts`, `general-admin-crosstenant.spec.ts`, `cpf-encryption.spec.ts`
 
 ## Como rodar localmente
 ```bash
