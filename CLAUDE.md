@@ -127,14 +127,16 @@ entregasos/
 - CI GitHub Actions (lint + typecheck)
 - `.env` com secrets gerados (gitignored)
 
+**Resolvido na sessão 2026-05-18:**
+- ✅ Bug Prisma P1010 destravado — era conflito de porta (brew Postgres 17 em 5432). Docker Postgres movido pra `5433:5432`. Migration `20260518234003_init` criada (7 tabelas). Detalhes da causa raiz em [memory/project_entregasos_architecture.md](memory/project_entregasos_architecture.md).
+- ✅ `prisma` + `@prisma/client` 5.22.0 adicionados como devDeps na raiz (workaround pro `projectRoot` do Prisma em monorepo com schema na raiz).
+
 **Pendências críticas:**
-1. 🐛 **Migration Prisma BLOQUEADA com P1010 client-side** — `prisma migrate dev` falha antes de chegar no Postgres (psql direto funciona). Testado: Prisma 5.20/5.22/6.16, postgres alpine/debian, arm64/amd64, pg_hba trust, schema ownership, user postgres. Próximas hipóteses: limpar `~/.cache/prisma/`, reinstalar Node 22, testar com Bun, ou trocar Prisma por `pg` direto.
-2. 🎨 **Branding pendente** — tagline + paleta + logo direction pra EntregaSOS (a tagline "Levou? Levou." era do nome anterior descartado).
-3. 📦 **GitHub remote** — repo ainda local, não criado em `github.com`.
+1. 🎨 **Branding pendente** — tagline + paleta + logo direction pra EntregaSOS (a tagline "Levou? Levou." era do nome anterior descartado).
+2. 📦 **GitHub remote** — repo ainda local, não criado em `github.com`.
 
 **Próximos passos sugeridos:**
-- Desbloquear migration Prisma (sessão dedicada)
-- Implementar módulo `auth` (JWT + RBAC) — Semana 2 do cronograma
+- Implementar módulo `auth` (JWT + RBAC) — Semana 2 do cronograma → branch `EOS-002`
 - Criar repositório público no GitHub
 - Decidir branding (party mode session pode ajudar)
 
@@ -142,8 +144,8 @@ entregasos/
 ```bash
 pnpm install
 cp .env.example .env   # se não tiver
-pnpm db:up             # sobe Postgres + Mongo
-pnpm db:migrate        # ❌ ainda bloqueado
+pnpm db:up             # sobe Postgres (porta 5433) + Mongo
+pnpm db:migrate        # ✅ funciona
 pnpm dev:api           # NestJS em http://localhost:3333
 ```
 
@@ -151,7 +153,7 @@ pnpm dev:api           # NestJS em http://localhost:3333
 Arquivos em [`memory/`](memory/) (não vai pro git — config pessoal):
 - `MEMORY.md` — índice
 - `project_entregasos.md` — visão geral, persona, JTBD, telas, branding, onboarding
-- `project_entregasos_architecture.md` — schema completo, multitenancy, white label runtime, invite flow, CI, env vars, bug Prisma aberto
+- `project_entregasos_architecture.md` — schema completo, multitenancy, white label runtime, invite flow, CI, env vars
 - `user_naiara_profile.md` — perfil de aprendizado, cronograma 2026, preferências
 
 ## Convenções de branch e commit
