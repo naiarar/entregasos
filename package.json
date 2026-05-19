@@ -1,8 +1,8 @@
 {
-  "name": "levou",
+  "name": "entregasos",
   "version": "0.0.1",
   "private": true,
-  "description": "Levou — SaaS multitenant de gestão de frota própria multimodal para SMB",
+  "description": "EntregaSOS — SaaS multitenant de gestão de frota própria multimodal para SMB",
   "engines": {
     "node": ">=22",
     "pnpm": ">=9"
@@ -13,13 +13,16 @@
     "typecheck": "pnpm -r --parallel typecheck",
     "test": "pnpm -r --parallel test",
     "build": "pnpm -r build",
-    "dev:api": "pnpm --filter @levou/api dev",
+    "dev:api": "pnpm --filter @entregasos/api dev",
     "db:up": "docker compose up -d postgres mongo",
     "db:down": "docker compose down",
-    "db:migrate": "pnpm --filter @levou/api prisma migrate dev",
-    "db:generate": "pnpm --filter @levou/api prisma generate"
+    "db:migrate": "dotenv -e .env -- pnpm --filter @entregasos/api prisma migrate dev",
+    "db:generate": "dotenv -e .env -- pnpm --filter @entregasos/api prisma generate"
   },
   "devDependencies": {
+    "@prisma/client": "5.22.0",
+    "dotenv-cli": "^11.0.0",
+    "prisma": "5.22.0",
     "typescript": "5.6.3"
   }
 }

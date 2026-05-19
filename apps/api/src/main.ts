@@ -12,7 +12,7 @@ async function bootstrap() {
   const port = config.get<number>("PORT", 3333);
 
   await app.listen(port);
-  Logger.log(`Levou API rodando em http://localhost:${port}`, "Bootstrap");
+  Logger.log(`EntregaSOS API rodando em http://localhost:${port}`, "Bootstrap");
 }
 
 bootstrap();

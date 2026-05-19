@@ -1,8 +1,6 @@
-# Levou
+# EntregaSOS
 
 SaaS multitenant de gestão de frota própria multimodal (bike, moto, carro) para SMB brasileiro — farmácia, pet shop, restaurante de bairro com motoboy/ciclista próprio.
-
-> "Levou? Levou."
 
 ## Stack
 
@@ -15,7 +13,7 @@ SaaS multitenant de gestão de frota própria multimodal (bike, moto, carro) par
 ## Estrutura (monorepo pnpm workspaces)
 
 ```
-levou/
+entregasos/
 ├── apps/
 │   ├── api/          # NestJS
 │   ├── web/          # Next.js (a criar)
